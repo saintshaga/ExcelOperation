@@ -1,6 +1,8 @@
-*.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
+target
+.project
+.classpath
+.settings
+logs
+.externalToolBuilders
+formAppNumber.xml
+WebContent
