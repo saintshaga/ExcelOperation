@@ -1,25 +1,25 @@
 package cn.saintshaga.excel.operation.app;
 
-import cn.saintshaga.excel.operation.library.FieldProperty;
+import cn.saintshaga.excel.operation.library.InputFieldProperty;
 
 public class Data1Dto {
 
-	@FieldProperty("营业厅名称")
+	@InputFieldProperty("营业厅名称")
 	private String name;
 	
-	@FieldProperty("机构号")
+	@InputFieldProperty("机构号")
 	private String id;
 	
-	@FieldProperty("区域")
+	@InputFieldProperty("区域")
 	private String area;
 	
-	@FieldProperty("营业厅类型")
+	@InputFieldProperty("营业厅类型")
 	private String type;
 	
-	@FieldProperty("合约")
+	@InputFieldProperty("合约")
 	private int heyue;
 	
-	@FieldProperty("分销")
+	@InputFieldProperty("分销")
 	private int fenxiao;
 
 	public String getName() {

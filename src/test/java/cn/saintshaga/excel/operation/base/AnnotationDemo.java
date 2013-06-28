@@ -3,13 +3,13 @@ package cn.saintshaga.excel.operation.base;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import cn.saintshaga.excel.operation.library.FieldProperty;
+import cn.saintshaga.excel.operation.library.InputFieldProperty;
 
 public class AnnotationDemo {
-	@FieldProperty("StringA")
+	@InputFieldProperty("StringA")
 	private String a;
 	
-	@FieldProperty("IntegerB")
+	@InputFieldProperty("IntegerB")
 	private int b;
 	
 	
@@ -22,8 +22,8 @@ public class AnnotationDemo {
 		for (Field field : fields) {
 			if(field.getModifiers() == Modifier.PRIVATE) {
 				String string="";
-				if(field.isAnnotationPresent(FieldProperty.class)) {
-					string = field.getAnnotation(FieldProperty.class).value();
+				if(field.isAnnotationPresent(InputFieldProperty.class)) {
+					string = field.getAnnotation(InputFieldProperty.class).value();
 				}
 				System.out.println(field.getName() + " " +string);
 			}

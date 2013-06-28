@@ -1,6 +1,7 @@
 package cn.saintshaga.excel.operation.library;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -39,15 +40,21 @@ public class ExcelDao {
 				throw new InvalidParameterException("line number should be in 1~"+number);
 			}
 			Field[] fields = cls.getDeclaredFields();
-			Map<Field, Integer> colMap = findColumn(sheet, titleLine, fields);
+			Map<Field, List<Integer>> colMap = findColumn(sheet, titleLine, fields);
 			
 			for(int i=fromLine; i<=number; i++) {
 				Cell[] cells = sheet.getRow(i-1);
 				T t = cls.newInstance();
 				for (Field field : fields) {
-					if(field.isAnnotationPresent(FieldProperty.class)) {
-						Cell cell = cells[colMap.get(field).intValue()];
-						fillField(t, cell, field);
+					if(field.isAnnotationPresent(InputFieldProperty.class)) {
+						Class<?> type = field.getType();
+						if(!type.isArray()) {
+							Cell cell = cells[colMap.get(field).get(0)];
+							fillField(t, cell, field);
+						} else {
+							List<Integer> cols = colMap.get(field);
+							fillArray(t,field,cells,cols);
+						}
 					}
 				}
 				allDatas.add(t);
@@ -57,6 +64,78 @@ public class ExcelDao {
 		}
 		return allDatas;
 	}
+	
+	private <T> void fillArray(T t, Field field, Cell[] cells, List<Integer> cols) throws Exception{
+		Class<?> type = field.getType().getComponentType();
+		Object[] arrays = (Object[])Array.newInstance(type, cols.size());
+		for(int i=0; i<arrays.length; i++) {
+			Cell cell = cells[cols.get(i)];
+			String content = cell.getContents().trim();
+			if(type == Integer.class) {
+				if(content.equals("")) {
+					arrays[i] = null;
+				} else if (cell.getType() == CellType.NUMBER) {
+					arrays[i] = Integer.valueOf((int)((NumberCell)cell).getValue());
+				} else {
+					arrays[i] = Integer.valueOf(content);
+				}
+			} else if (type == Double.class) {
+				if(content.equals("")) {
+					arrays[i] = null;
+				} else if (cell.getType() == CellType.NUMBER) {
+					arrays[i] = Double.valueOf(((NumberCell)cell).getValue());
+				} else {
+					arrays[i] = Double.valueOf(content);
+				}
+			} else if (type == String.class) {
+				arrays[i] = content;
+			} else {
+				throw new UnsupportedOperationException("Unsupported array of type " + type.getCanonicalName());
+			}
+		}
+		field.set(t, arrays);
+	}
+	
+//	private <T> void fillArray(T t, Field field, Cell[] cells, List<Integer> cols) throws Exception{
+//		Class<?> type = field.getType().getComponentType();
+//		if(type == Integer.class) {
+//			Integer[] integers = new Integer[cols.size()];
+//			for(int i=0; i<integers.length; i++) {
+//				Cell cell = cells[cols.get(i)];
+//				String content = cell.getContents().trim();
+//				if(content.equals("")) {
+//					integers[i] = null;
+//				} else if (cell.getType() == CellType.NUMBER) {
+//					integers[i] = (int)((NumberCell)cell).getValue();
+//				} else {
+//					integers[i] = Integer.valueOf(content);
+//				}
+//			}
+//			field.set(t, integers);
+//		} else if (type == Double.class) {
+//			Double[] doubles = new Double[cols.size()];
+//			for(int i=0; i<doubles.length; i++) {
+//				Cell cell = cells[cols.get(i)];
+//				String content = cell.getContents().trim();
+//				if(content.equals("")) {
+//					doubles[i] = null;
+//				} else if (cell.getType() == CellType.NUMBER) {
+//					doubles[i] = ((NumberCell)cell).getValue();
+//				} else {
+//					doubles[i] = Double.valueOf(content);
+//				}
+//			}
+//			field.set(t, doubles);
+//		} else if (type == String.class) {
+//			String[] strings = new String[cols.size()];
+//			for(int i=0; i<strings.length; i++) {
+//				strings[i] = cells[cols.get(i)].getContents().trim();
+//			}
+//			field.set(t, strings);
+//		} else {
+//			throw new UnsupportedOperationException("Unsupported array of type " + type.getCanonicalName());
+//		}
+//	}
 	
 	private <T> void fillField(T t, Cell cell, Field field) throws Exception{
 		Class<?> type = field.getType();
@@ -117,23 +196,30 @@ public class ExcelDao {
 		
 	}
 	//get column index according to the column name
-	private <T> Map<Field, Integer> findColumn(Sheet sheet, int titleLine, Field[] fields) {
-		Map<Field, Integer> retMap = new HashMap<Field, Integer>();
-		Map<String, Integer> cellMap = new HashMap<String, Integer>();
+	private <T> Map<Field, List<Integer>> findColumn(Sheet sheet, int titleLine, Field[] fields) {
+		Map<Field, List<Integer>> retMap = new HashMap<Field, List<Integer>>();
+		Map<String, List<Integer>> cellMap = new HashMap<String, List<Integer>>();
 		Cell[] cells = sheet.getRow(titleLine-1);
 		for (int i=0; i<cells.length; i++) {
-			cellMap.put(cells[i].getContents().trim(), Integer.valueOf(i));
+			String key = cells[i].getContents().trim();
+			if(cellMap.containsKey(key)) {
+				cellMap.get(key).add(Integer.valueOf(i));
+			} else {
+				List<Integer> value = new ArrayList<Integer>();
+				value.add(Integer.valueOf(i));
+				cellMap.put(key, value);
+			}
 		}
 		for (Field field : fields) {
-			if(field.isAnnotationPresent(FieldProperty.class)) {
+			if(field.isAnnotationPresent(InputFieldProperty.class)) {
 				field.setAccessible(true);
-				Integer col = cellMap.get(field.getAnnotation(FieldProperty.class).value());
-				if(col == null) {
+				List<Integer> cols = cellMap.get(field.getAnnotation(InputFieldProperty.class).value());
+				if(cols == null) {
 					throw new RuntimeException("There is no column name called " + 
-										field.getAnnotation(FieldProperty.class).value() + 
+										field.getAnnotation(InputFieldProperty.class).value() + 
 										", in field " + field.getName());
 				}
-				retMap.put(field, col);
+				retMap.put(field, cols);
 			}
 		}
 		return retMap;

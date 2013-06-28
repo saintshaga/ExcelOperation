@@ -3,19 +3,19 @@ package cn.saintshaga.excel.operation.base;
 import java.util.List;
 
 import cn.saintshaga.excel.operation.library.ExcelDao;
-import cn.saintshaga.excel.operation.library.FieldProperty;
+import cn.saintshaga.excel.operation.library.InputFieldProperty;
 
 public class TestDto {
-	@FieldProperty("渠道编码")
+	@InputFieldProperty("渠道编码")
 	private String codeNumber;
 	
-	@FieldProperty("营业厅名称")
+	@InputFieldProperty("营业厅名称")
 	private String name;
 	
-	@FieldProperty("营业厅面积")
+	@InputFieldProperty("营业厅面积")
 	private Integer area;
 	
-	@FieldProperty("台席总数")
+	@InputFieldProperty("台席总数")
 	private Integer totalNumber;
 	
 
