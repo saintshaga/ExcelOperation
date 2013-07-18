@@ -44,7 +44,7 @@ public class ExcelOut {
 					Object[] arrays = (Object[])field.get(t);
 					for(int i=0; i<arrays.length; i++) {
 						int column = (property.column()-1) + i*property.delta();
-						Label label = new Label(column, lineNumber, arrays[i].toString());
+						Label label = new Label(column, lineNumber, arrays[i]==null?"空":arrays[i].toString());
 						sheet.addCell(label);
 					}
 				}

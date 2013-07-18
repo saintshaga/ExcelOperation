@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 public @interface OutputFieldProperty {
 	String title();
 	int column();
-	int delta();
+	int delta() default 0;
 }
