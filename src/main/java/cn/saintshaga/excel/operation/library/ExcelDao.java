@@ -18,6 +18,7 @@ import jxl.Sheet;
 import jxl.Workbook;
 
 public class ExcelDao {
+	private static final String EMPTY_DATA = "空";
 
 	protected Workbook book;	
 	public ExcelDao(String filename) {
@@ -72,7 +73,7 @@ public class ExcelDao {
 			Cell cell = cells[cols.get(i)];
 			String content = cell.getContents().trim();
 			if(type == Integer.class) {
-				if(content.equals("")) {
+				if(content.equals("") || content.equals(EMPTY_DATA)) {
 					arrays[i] = null;
 				} else if (cell.getType() == CellType.NUMBER) {
 					arrays[i] = Integer.valueOf((int)((NumberCell)cell).getValue());
@@ -80,7 +81,7 @@ public class ExcelDao {
 					arrays[i] = Integer.valueOf(content);
 				}
 			} else if (type == Double.class) {
-				if(content.equals("")) {
+				if(content.equals("") || content.equals(EMPTY_DATA)) {
 					arrays[i] = null;
 				} else if (cell.getType() == CellType.NUMBER) {
 					arrays[i] = Double.valueOf(((NumberCell)cell).getValue());
@@ -150,7 +151,7 @@ public class ExcelDao {
 		} else if (type == Integer.class) {
 			if(cell.getType() == CellType.NUMBER) {
 				field.set(t, Integer.valueOf((int)((NumberCell)cell).getValue()));
-			} else if (content.equals("")) {
+			} else if (content.equals("") || content.equals(EMPTY_DATA)) {
 				field.set(t, null);
 			} else{
 				field.set(t, Integer.valueOf(content));
@@ -176,7 +177,7 @@ public class ExcelDao {
 		} else if (type == Double.class) {
 			if(cell.getType() == CellType.NUMBER) {
 				field.set(t, Double.valueOf(((NumberCell)cell).getValue()));
-			} else if (content.equals("")) {
+			} else if (content.equals("") || content.equals(EMPTY_DATA)) {
 				field.set(t, null);
 			} else {
 				field.set(t, Double.valueOf(content));

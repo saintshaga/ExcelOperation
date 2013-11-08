@@ -17,8 +17,8 @@ public class Data2Out extends AbsOut<Data2Dto>{
 		try {
 			Label labelA = new Label(0, lineNum, dto.getId());
 			Label labelB = new Label(1,lineNum,dto.getName());
-			Label labelC = new Label(2,lineNum,dto.getArea());
-			Label labelD = new Label(3,lineNum,dto.getType());
+//			Label labelC = new Label(2,lineNum,dto.getArea());
+//			Label labelD = new Label(3,lineNum,dto.getType());
 //			Label labelE = new Label(4,lineNum,int2str(dto.getHeyue1()));
 //			Label labelF = new Label(5,lineNum,int2str(dto.getFenxiao1()));
 //			Label labelG = new Label(6,lineNum,int2str(dto.getHeyue1()+dto.getFenxiao1()));

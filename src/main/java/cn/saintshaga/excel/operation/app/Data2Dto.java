@@ -7,29 +7,25 @@ import cn.saintshaga.excel.operation.library.OutputFieldProperty;
 
 public class Data2Dto {
 
-	@InputFieldProperty("Name")
-	@OutputFieldProperty(title="Name",column=1,delta=0)
+	@InputFieldProperty("营业厅名称")
+	@OutputFieldProperty(title="Name",column=1)
 	private String name;
 	
-	@InputFieldProperty("ID")
-	@OutputFieldProperty(title="ID",column=2,delta=0)
+	@InputFieldProperty("机构号")
+	@OutputFieldProperty(title="ID",column=2)
 	private String id;
-	
-	@InputFieldProperty("区域")
-	@OutputFieldProperty(title="区域",column=3,delta=0)
-	private String area;
-	
-	@InputFieldProperty("营业厅类型")
-	@OutputFieldProperty(title="营业厅类型",column=4,delta=0)
-	private String type;
-	
+		
 	@InputFieldProperty("合约")
-	@OutputFieldProperty(title="合约",column=5,delta=2)
+	@OutputFieldProperty(title="合约",column=3,delta=3)
 	private Integer[] heyue;
 	
 	@InputFieldProperty("分销")
-	@OutputFieldProperty(title="分销",column=6,delta=2)
+	@OutputFieldProperty(title="分销",column=4,delta=3)
 	private Integer[] fenxiao;
+	
+	@InputFieldProperty("终端销量")
+	@OutputFieldProperty(title="终端销量",column=5,delta=3)
+	private Integer[] total;
 
 	public String getName() {
 		return name;
@@ -45,22 +41,6 @@ public class Data2Dto {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getArea() {
-		return area;
-	}
-
-	public void setArea(String area) {
-		this.area = area;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public Integer[] getHeyue() {
@@ -79,13 +59,21 @@ public class Data2Dto {
 		this.fenxiao = fenxiao;
 	}
 
+	public Integer[] getTotal() {
+		return total;
+	}
+
+	public void setTotal(Integer[] total) {
+		this.total = total;
+	}
+
 	@Override
 	public String toString() {
-		return "Data2Dto [name=" + name + ", id=" + id + ", area=" + area
-				+ ", type=" + type + ", heyue=" + Arrays.toString(heyue)
-				+ ", fenxiao=" + Arrays.toString(fenxiao) + "]";
+		return "Data2Dto [name=" + name + ", id=" + id + ", heyue="
+				+ Arrays.toString(heyue) + ", fenxiao="
+				+ Arrays.toString(fenxiao) + ", total="
+				+ Arrays.toString(total) + "]";
 	}
-	
-	
+
 
 }
