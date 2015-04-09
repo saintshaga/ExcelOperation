@@ -50,8 +50,12 @@ public class ExcelDao {
 					if(field.isAnnotationPresent(InputFieldProperty.class)) {
 						Class<?> type = field.getType();
 						if(!type.isArray()) {
-							Cell cell = cells[colMap.get(field).get(0)];
-							fillField(t, cell, field);
+							if(colMap.get(field).get(0) >= cells.length) {
+								fillField(t, null, field);
+							} else {
+								Cell cell = cells[colMap.get(field).get(0)];
+								fillField(t, cell, field);
+							}
 						} else {
 							List<Integer> cols = colMap.get(field);
 							fillArray(t,field,cells,cols);
@@ -140,7 +144,12 @@ public class ExcelDao {
 	
 	private <T> void fillField(T t, Cell cell, Field field) throws Exception{
 		Class<?> type = field.getType();
-		String content = cell.getContents().trim();
+		String content;
+		if(cell == null) {
+			content = "";
+		} else {
+			content = cell.getContents().trim();
+		}
 		String numberContent = content.equals("")?"0":content;
 		if(type == int.class) {
 			if(cell.getType() == CellType.NUMBER) {
