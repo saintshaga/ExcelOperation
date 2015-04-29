@@ -48,13 +48,37 @@ public class Main {
 				}
 			}
 		}
-		System.out.println("numberOfPlaces:" + numberOfPlaces);
-		System.out.println("totalNumber:" + results.size());
+		System.out.println("覆盖的乡镇数:" + numberOfPlaces);
+		System.out.println("总共选中的条目数:" + results.size());
 		ExcelOut out = new ExcelOut("/Users/saintshaga/workspace/ruby/out.xls");
 		out.writeSheet(DataDto.class, "result", 1, results);
 		out.close();
 		System.out.println("end");
 
+		for(int i=100; i<300; i+=10) {
+			for(int j=10; j<50; j++) {
+				
+			}
+		}
 	}
-
+	private String filter(Table<String, String, List<DataDto>> table, int placeThresh, int typeThresh) {
+		int numberOfPlaces = 0;
+		int total = 0;
+		for(String place : table.rowKeySet()) {
+			Map<String, List<DataDto>> allInPlace = table.row(place);
+			int numberInPlace = 0;
+			for(String pinpai : allInPlace.keySet()) {
+				numberInPlace += allInPlace.get(pinpai).size();
+			}
+			if(numberInPlace >= placeThresh) {
+				numberOfPlaces++;
+				for(String pinpai : allInPlace.keySet()) {
+					if(allInPlace.get(pinpai).size() >= typeThresh) {
+						total += allInPlace.get(pinpai).size();
+					}
+				}
+			}
+		}
+		return "" + numberOfPlaces + "," + total;
+	}
 }
