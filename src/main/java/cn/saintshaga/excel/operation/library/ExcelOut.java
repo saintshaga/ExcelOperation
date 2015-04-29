@@ -38,7 +38,7 @@ public class ExcelOut {
 				field.setAccessible(true);
 				OutputFieldProperty property = field.getAnnotation(OutputFieldProperty.class);
 				if(!field.getType().isArray()) {
-					Label label = new Label(property.column()-1,lineNumber,field.get(t).toString());
+					Label label = new Label(property.column()-1,lineNumber,notNullToString(field.get(t)));
 					sheet.addCell(label);
 				} else {
 					Object[] arrays = (Object[])field.get(t);
@@ -50,6 +50,10 @@ public class ExcelOut {
 				}
 			}
 		}
+	}
+	
+	private String notNullToString(Object object) {
+		return object == null ? "" : object.toString();
 	}
 	
 	private <T> int writeHeader(Field[] fields, WritableSheet sheet) throws Exception{

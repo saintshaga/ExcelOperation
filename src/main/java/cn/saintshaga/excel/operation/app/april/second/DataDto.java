@@ -22,7 +22,7 @@ public class DataDto {
 	@OutputFieldProperty(title="终端机型1", column=4)
 	private String type1;
 	
-	@InputFieldProperty("价格1")
+//	@InputFieldProperty("价格1")
 	@OutputFieldProperty(title="价格1", column=5)
 	private String price1;
 	
@@ -46,7 +46,7 @@ public class DataDto {
 	@OutputFieldProperty(title="终端机型2", column=10)
 	private String type2;
 	
-	@InputFieldProperty("价格2")
+//	@InputFieldProperty("价格2")
 	@OutputFieldProperty(title="价格2", column=11)
 	private String price2;
 	
@@ -58,6 +58,7 @@ public class DataDto {
 	@OutputFieldProperty(title="营销案2", column=13)
 	private String an2;
 	
+//	@InputFieldProperty("数量")
 	@OutputFieldProperty(title="数量", column=14)
 	private Integer number;
 	
@@ -188,10 +189,12 @@ public class DataDto {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((type1 == null) ? 0 : type1.hashCode());
-		result = prime * result + ((type2 == null) ? 0 : type2.hashCode());
+//		result = prime * result + ((type1 == null) ? 0 : type1.hashCode());
+//		result = prime * result + ((type2 == null) ? 0 : type2.hashCode());
 //		result = prime * result + ((way1 == null) ? 0 : way1.hashCode());
 //		result = prime * result + ((way2 == null) ? 0 : way2.hashCode());
+		result = prime * result + ((pinpai1 == null) ? 0 : pinpai1.hashCode());
+		result = prime * result + ((pinpai2 == null) ? 0 : pinpai2.hashCode());
 		return result;
 	}
 
@@ -214,16 +217,16 @@ public class DataDto {
 //				return false;
 //		} else if (!an2.equals(other.an2))
 //			return false;
-		if (type1 == null) {
-			if (other.type1 != null)
-				return false;
-		} else if (!type1.equals(other.type1))
-			return false;
-		if (type2 == null) {
-			if (other.type2 != null)
-				return false;
-		} else if (!type2.equals(other.type2))
-			return false;
+//		if (type1 == null) {
+//			if (other.type1 != null)
+//				return false;
+//		} else if (!type1.equals(other.type1))
+//			return false;
+//		if (type2 == null) {
+//			if (other.type2 != null)
+//				return false;
+//		} else if (!type2.equals(other.type2))
+//			return false;
 //		if (way1 == null) {
 //			if (other.way1 != null)
 //				return false;
@@ -234,6 +237,16 @@ public class DataDto {
 //				return false;
 //		} else if (!way2.equals(other.way2))
 //			return false;
+		if (pinpai1 == null) {
+			if (other.pinpai1 != null)
+				return false;
+		} else if (!pinpai1.equals(other.pinpai1))
+			return false;
+		if (pinpai2 == null) {
+			if (other.pinpai2 != null)
+				return false;
+		} else if (!pinpai2.equals(other.pinpai2))
+			return false;
 		return true;
 	}
 	
